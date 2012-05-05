@@ -79,9 +79,9 @@ signals:
     void defaultAddressChanged(const QString &address);
 
 public slots:
-    /* Update address list from core. Invalidates any indices.
+    /* Update address list from core.
      */
-    void update();
+    void updateEntry(const QString &address, const QString &label, int status);
 };
 
 #endif // ADDRESSTABLEMODEL_H

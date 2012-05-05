@@ -111,9 +111,6 @@ public:
     std::map<CTxDestination, int64> GetAddressBalances();
 
     std::map<uint256, CWalletTx> mapWallet;
-    std::vector<uint256> vWalletUpdated;
-    std::vector<uint256> vMintingWalletUpdated;
-
     std::map<uint256, int> mapRequestCount;
 
     std::map<CTxDestination, std::string> mapAddressBook;
@@ -249,14 +246,7 @@ public:
 
     bool DelAddressBookName(const CTxDestination& address);
 
-    void UpdatedTransaction(const uint256 &hashTx)
-    {
-        {
-            LOCK(cs_wallet);
-            vWalletUpdated.push_back(hashTx);
-            vMintingWalletUpdated.push_back(hashTx);
-        }
-    }
+    void UpdatedTransaction(const uint256 &hashTx);
 
     void PrintWallet(const CBlock& block);
 

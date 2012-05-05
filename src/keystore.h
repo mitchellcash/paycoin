@@ -142,18 +142,7 @@ public:
         return result;
     }
 
-    bool Lock()
-    {
-        if (!SetCrypted())
-            return false;
-
-        {
-            LOCK(cs_KeyStore);
-            vMasterKey.clear();
-        }
-
-        return true;
-    }
+    bool Lock();
 
     virtual bool AddCryptedKey(const CPubKey &vchPubKey, const std::vector<unsigned char> &vchCryptedSecret);
     bool AddKey(const CKey& key);

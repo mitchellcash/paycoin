@@ -290,7 +290,9 @@ bool CWallet::EncryptWallet(const SecureString& strWalletPassphrase)
         // Need to completely rewrite the wallet file; if we don't, bdb might keep
         // bits of the unencrypted private key in slack space in the database file.
         CDB::Rewrite(strWalletFile);
+
     }
+    NotifyKeyStoreStatusChanged(this);
 
     return true;
 }
@@ -313,7 +315,7 @@ void CWallet::WalletUpdateSpent(const CTransaction &tx)
                     printf("WalletUpdateSpent found spent coin %sxpy %s\n", FormatMoney(wtx.GetCredit()).c_str(), wtx.GetHash().ToString().c_str());
                     wtx.MarkSpent(txin.prevout.n);
                     wtx.WriteToDisk();
-                    UpdatedTransaction(txin.prevout.hash);
+                    NotifyTransactionChanged(this, txin.prevout.hash, CT_UPDATED);
                 }
             }
         }
@@ -389,11 +391,11 @@ bool CWallet::AddToWallet(const CWalletTx& wtxIn)
             }
         }
 #endif
-        // Notify UI
-        UpdatedTransaction(hash);
-
         // since AddToWallet is called directly for self-originating transactions, check for consumption of own coins
         WalletUpdateSpent(wtx);
+
+        // Notify UI of new or updated transaction
+        NotifyTransactionChanged(this, hash, fInsertedNew ? CT_NEW : CT_UPDATED);
 
         // notify an external script when a wallet transaction comes in or is updated
         std::string strCmd = GetArg("-walletnotify", "");
@@ -403,10 +405,8 @@ bool CWallet::AddToWallet(const CWalletTx& wtxIn)
             boost::replace_all(strCmd, "%s", wtxIn.GetHash().GetHex());
             boost::thread t(runCommand, strCmd); // thread runs free
         }
-    }
 
-    // Refresh UI
-    MainFrameRepaint();
+    }
     return true;
 }
 
@@ -1628,7 +1628,7 @@ bool CWallet::CommitTransaction(CWalletTx& wtxNew, CReserveKey& reservekey)
                 coin.BindWallet(this);
                 coin.MarkSpent(txin.prevout.n);
                 coin.WriteToDisk();
-                UpdatedTransaction(coin.GetHash());
+                NotifyTransactionChanged(this, coin.GetHash(), CT_UPDATED);
             }
 
             if (fFileBacked)
@@ -1647,7 +1647,6 @@ bool CWallet::CommitTransaction(CWalletTx& wtxNew, CReserveKey& reservekey)
         }
         wtxNew.RelayWalletTransaction();
     }
-    MainFrameRepaint();
     return true;
 }
 
@@ -1689,7 +1688,6 @@ string CWallet::SendMoney(CScript scriptPubKey, int64 nValue, CWalletTx& wtxNew,
     if (!CommitTransaction(wtxNew, reservekey))
         return _("Error: The transaction was rejected.  This might happen if some of the coins in your wallet were already spent, such as if you used a copy of wallet.dat and coins were spent in the copy but not marked as spent here.");
 
-    MainFrameRepaint();
     return "";
 }
 
@@ -1741,8 +1739,9 @@ int CWallet::LoadWallet(bool& fFirstRunRet)
 
 bool CWallet::SetAddressBookName(const CTxDestination& address, const string& strName)
 {
+    std::map<CBitcoinAddress, std::string>::iterator mi = mapAddressBook.find(address);
     mapAddressBook[address] = strName;
-    AddressBookRepaint();
+    NotifyAddressBookChanged(this, address.ToString(), strName, (mi == mapAddressBook.end()) ? CT_NEW : CT_UPDATED);
     if (!fFileBacked)
         return false;
     return CWalletDB(strWalletFile).WriteName(CBitcoinAddress(address).ToString(), strName);
@@ -1751,7 +1750,7 @@ bool CWallet::SetAddressBookName(const CTxDestination& address, const string& st
 bool CWallet::DelAddressBookName(const CTxDestination& address)
 {
     mapAddressBook.erase(address);
-    AddressBookRepaint();
+    NotifyAddressBookChanged(this, address.ToString(), "", CT_DELETED);
     if (!fFileBacked)
         return false;
     return CWalletDB(strWalletFile).EraseName(CBitcoinAddress(address).ToString());
@@ -2332,4 +2331,15 @@ bool CWallet::GetStakeWeight(const CKeyStore& keystore, uint64& nMinWeight, uint
     }
 
     return true;
+}
+
+void CWallet::UpdatedTransaction(const uint256 &hashTx)
+{
+    {
+        LOCK(cs_wallet);
+        // Only notify UI if this transaction is in this wallet
+        map<uint256, CWalletTx>::const_iterator mi = mapWallet.find(hashTx);
+        if (mi != mapWallet.end())
+            NotifyTransactionChanged(this, hashTx, CT_UPDATED);
+    }
 }

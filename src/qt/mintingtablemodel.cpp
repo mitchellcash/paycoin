@@ -225,26 +225,19 @@ MintingTableModel::~MintingTableModel()
     delete priv;
 }
 
-void MintingTableModel::update()
+void MintingTableModel::updateTransaction(const QString &hash, int status)
 {
-    QList<uint256> updated;
+    uint256 updated;
+    updated.SetHex(hash.toStdString());
 
-    // Check if there are changes to wallet map
-    {
-        TRY_LOCK(wallet->cs_wallet, lockWallet);
-        if (lockWallet && !wallet->vMintingWalletUpdated.empty())
-        {
-            BOOST_FOREACH(uint256 hash, wallet->vMintingWalletUpdated)
-            {
-                updated.append(hash);
-            }
-            wallet->vMintingWalletUpdated.clear();
-        }
-    }
+    priv->updateWallet(updated, status);
+}
 
-    if(!updated.empty())
+void MintingTableModel::updateConfirmations()
+{
+    if(nBestHeight != cachedNumBlocks)
     {
-        priv->updateWallet(updated);
+        cachedNumBlocks = nBestHeight;
     }
 }
 
