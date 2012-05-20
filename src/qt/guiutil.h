@@ -3,6 +3,7 @@
 
 #include <QString>
 #include <QObject>
+#include <QMessageBox>
 
 QT_BEGIN_NAMESPACE
 class QFont;
@@ -80,6 +81,7 @@ namespace GUIUtil
     class ToolTipToRichTextFilter : public QObject
     {
         Q_OBJECT
+
     public:
         explicit ToolTipToRichTextFilter(int size_threshold, QObject *parent = 0);
 
@@ -88,6 +90,22 @@ namespace GUIUtil
 
     private:
         int size_threshold;
+    };
+
+    /** Help message for Paycoin-Qt, shown with --help. */
+    class HelpMessageBox : public QMessageBox
+    {
+        Q_OBJECT
+
+    public:
+        HelpMessageBox(QWidget *parent = 0);
+
+        void exec();
+
+    private:
+        QString header;
+        QString coreOptions;
+        QString uiOptions;
     };
 
 } // namespace GUIUtil
