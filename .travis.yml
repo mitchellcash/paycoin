@@ -12,9 +12,7 @@ addons:
       - libboost-all-dev
       - libssl-dev
       - libminiupnpc-dev
-      - libminiupnpc8
       - libdb++-dev
-      - libdb++
 
 script:
   - cd src
