@@ -3,7 +3,7 @@ language: cpp
 cache: apt
 
 compiler:
-  #- clang # Broken, doesn't build...
+  - clang # Broken, doesn't build...
   - gcc
 
 addons:
@@ -13,9 +13,16 @@ addons:
       - libssl-dev
       - libminiupnpc-dev
       - libdb++-dev
+      - qt4-qmake
+      - libqt4-dev
+      - libqrencode-dev
 
 script:
+  - qmake USE_QRCODE=1
+  - make clean
+  - make
   - cd src
   - make -f makefile.unix clean
+  - make -f makefile.unix
   - make -f makefile.unix test_paycoin
   - ./test_paycoin
