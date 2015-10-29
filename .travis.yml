@@ -1,21 +1,20 @@
 language: cpp
 
-sudo: required
+cache: apt
 
 compiler:
   #- clang # Broken, doesn't build...
   - gcc
-
-before_install:
-  - sudo add-apt-repository -y ppa:bitcoin/bitcoin
-  - sudo apt-get update
-  - sudo apt-get -y install libdb4.8-dev libdb4.8++-dev libminiupnpc-dev libminiupnpc8
 
 addons:
   apt:
     packages:
       - libboost-all-dev
       - libssl-dev
+      - libminiupnpc-dev
+      - libminiupnpc8
+      - libdb++-dev
+      - libdb++
 
 script:
   - cd src
