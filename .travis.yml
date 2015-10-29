@@ -3,7 +3,7 @@ language: cpp
 cache: apt
 
 compiler:
-  - clang # Broken, doesn't build...
+  #- clang # Broken, doesn't build...
   - gcc
 
 addons:
