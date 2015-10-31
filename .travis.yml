@@ -1,11 +1,15 @@
+os: linux
+sudo: required
+dist: trusty
 language: cpp
-
-cache: apt
-
 compiler:
-  #- clang # Broken, doesn't build...
+  - clang
   - gcc
-
+env:
+  global:
+    - MAKEJOBS=-j3
+cache:
+  apt: true
 addons:
   apt:
     packages:
@@ -16,7 +20,6 @@ addons:
       - qt4-qmake
       - libqt4-dev
       - libqrencode-dev
-
 script:
   - qmake USE_QRCODE=1
   - make clean
