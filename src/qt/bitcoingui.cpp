@@ -185,6 +185,8 @@ BitcoinGUI::BitcoinGUI(QWidget *parent):
     rpcConsole = new RPCConsole(this);
     connect(openRPCConsoleAction, SIGNAL(triggered()), rpcConsole, SLOT(show()));
 
+    connect(openConfEditorAction, SIGNAL(triggered()), rpcConsole, SLOT(showConfEditor()));
+
     gotoOverviewPage();
 }
 
@@ -291,6 +293,8 @@ void BitcoinGUI::createActions()
     changePassphraseAction->setToolTip(tr("Change the passphrase used for wallet encryption"));
     openRPCConsoleAction = new QAction(QIcon(":/icons/debugwindow"), tr("&Debug window"), this);
     openRPCConsoleAction->setToolTip(tr("Open debugging and diagnostic console"));
+    openConfEditorAction = new QAction(QIcon(":/icons/edit"), tr("Open &Configuration File"), this);
+    openConfEditorAction->setToolTip(tr("Open configuration file"));
 
     connect(quitAction, SIGNAL(triggered()), qApp, SLOT(quit()));
     connect(optionsAction, SIGNAL(triggered()), this, SLOT(optionsClicked()));
@@ -333,6 +337,7 @@ void BitcoinGUI::createMenuBar()
 
     QMenu *help = appMenuBar->addMenu(tr("&Help"));
     help->addAction(openRPCConsoleAction);
+    help->addAction(openConfEditorAction);
     help->addSeparator();
     help->addAction(aboutAction);
     help->addAction(aboutQtAction);

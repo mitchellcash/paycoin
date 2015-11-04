@@ -246,6 +246,15 @@ void openDebugLogfile()
 #endif
 }
 
+void openConfigfile()
+{
+    boost::filesystem::path pathConfig = GetConfigFile();
+
+    /* Open darkcoin.conf with the associated application */
+    if (boost::filesystem::exists(pathConfig))
+        QDesktopServices::openUrl(QUrl::fromLocalFile(boostPathToQString(pathConfig)));
+}
+
 ToolTipToRichTextFilter::ToolTipToRichTextFilter(int size_threshold, QObject *parent):
     size_threshold(size_threshold), QObject(parent)
 {

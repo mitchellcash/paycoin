@@ -47,6 +47,8 @@ public slots:
     void browseHistory(int offset);
     /** Scroll console view to end */
     void scrollToEnd();
+    /** Open external (default) editor with paycoin.conf */
+    void showConfEditor();
 signals:
     // For RPC command executor
     void stopExecutor();

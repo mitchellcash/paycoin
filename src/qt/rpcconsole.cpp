@@ -432,3 +432,8 @@ void RPCConsole::scrollToEnd()
     QScrollBar *scrollbar = ui->messagesWidget->verticalScrollBar();
     scrollbar->setValue(scrollbar->maximum());
 }
+
+void RPCConsole::showConfEditor()
+{
+    GUIUtil::openConfigfile();
+}
