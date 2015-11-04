@@ -93,6 +93,9 @@ namespace GUIUtil
         int size_threshold;
     };
 
+    /* Convert OS specific boost path to QString through UTF-8 */
+    QString boostPathToQString(const boost::filesystem::path &path);
+
 } // namespace GUIUtil
 
 #endif // GUIUTIL_H
