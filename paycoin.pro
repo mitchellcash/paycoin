@@ -254,7 +254,7 @@ SOURCES += src/qt/bitcoin.cpp src/qt/bitcoingui.cpp \
     src/qt/splashscreen.cpp
 
 RESOURCES += \
-    src/qt/bitcoin.qrc
+    src/qt/paycoin.qrc
 
 FORMS += \
     src/qt/forms/sendcoinsdialog.ui \
@@ -291,7 +291,7 @@ DEFINES += BITCOIN_QT_TEST
 CODECFORTR = UTF-8
 
 # for lrelease/lupdate
-# also add new translations to src/qt/bitcoin.qrc under translations/
+# also add new translations to src/qt/paycoin.qrc under translations/
 TRANSLATIONS = $$files(src/qt/locale/paycoin_*.ts)
 
 isEmpty(QMAKE_LRELEASE) {
