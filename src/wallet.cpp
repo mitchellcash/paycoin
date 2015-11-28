@@ -904,7 +904,7 @@ int64 CWallet::GetUnconfirmedBalance() const
 }
 
 // populate vCoins with vector of spendable (age, (value, (transaction, output_number))) outputs
-void CWallet::AvailableCoins(unsigned int nSpendTime, vector<COutput>& vCoins, bool fOnlyConfirmed, const CCoinControl *coinControl)) const
+void CWallet::AvailableCoins(unsigned int nSpendTime, vector<COutput>& vCoins, bool fOnlyConfirmed, const CCoinControl *coinControl) const
 {
     vCoins.clear();
 
