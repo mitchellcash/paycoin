@@ -78,7 +78,7 @@ QList<TransactionRecord> TransactionRecord::decomposeTransaction(const CWallet *
                     // Generated
                     sub.type = TransactionRecord::Generated;
                 }
-                else if (ExtractAddress(txout.scriptPubKey, address) && wallet->HaveKey(address))
+                else if (ExtractDestination(txout.scriptPubKey, address) && wallet->HaveKey(address))
                 {
                     // Received by Paycoin Address
                     sub.type = TransactionRecord::RecvWithAddress;
@@ -134,7 +134,7 @@ QList<TransactionRecord> TransactionRecord::decomposeTransaction(const CWallet *
                 }
 
                 CBitcoinAddress address;
-                if (ExtractAddress(txout.scriptPubKey, address))
+                if (ExtractDestination(txout.scriptPubKey, address))
                 {
                     // Sent to Paycoin Address
                     sub.type = TransactionRecord::SendToAddress;
