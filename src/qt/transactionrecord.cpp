@@ -76,7 +76,7 @@ QList<TransactionRecord> TransactionRecord::decomposeTransaction(const CWallet *
                 {
                     // Received by Paycoin Address
                     sub.type = TransactionRecord::RecvWithAddress;
-                    sub.address = address.ToString();
+                    sub.address = CBitcoinAddress(address).ToString();
                 }
                 else
                 {
@@ -132,7 +132,7 @@ QList<TransactionRecord> TransactionRecord::decomposeTransaction(const CWallet *
                 {
                     // Sent to Paycoin Address
                     sub.type = TransactionRecord::SendToAddress;
-                    sub.address = address.ToString();
+                    sub.address = CBitcoinAddress(address).ToString();
                 }
                 else
                 {
