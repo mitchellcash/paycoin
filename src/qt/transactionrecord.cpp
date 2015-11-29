@@ -61,7 +61,6 @@ QList<TransactionRecord> TransactionRecord::decomposeTransaction(const CWallet *
 
             parts.append(sub);
         }
-        else if (nNet > 0 || wtx.IsCoinBase())
         //
         // Credit
         //
@@ -73,12 +72,7 @@ QList<TransactionRecord> TransactionRecord::decomposeTransaction(const CWallet *
                 CBitcoinAddress address;
                 sub.idx = parts.size(); // sequence number
                 sub.credit = txout.nValue;
-                if (wtx.IsCoinBase())
-                {
-                    // Generated
-                    sub.type = TransactionRecord::Generated;
-                }
-                else if (ExtractDestination(txout.scriptPubKey, address) && wallet->HaveKey(address))
+                if (ExtractDestination(txout.scriptPubKey, address) && IsMine(*wallet, address))
                 {
                     // Received by Paycoin Address
                     sub.type = TransactionRecord::RecvWithAddress;
