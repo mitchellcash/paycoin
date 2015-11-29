@@ -26,4 +26,4 @@ script:
   - make -f makefile.unix clean
   - make -f makefile.unix
   - make -f makefile.unix test_paycoin
-  - ./test_paycoin --log_level=all --run_test=serialize_tests
+  - ./test_paycoin --run_test=serialize_tests
