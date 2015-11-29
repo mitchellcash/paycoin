@@ -69,7 +69,7 @@ QList<TransactionRecord> TransactionRecord::decomposeTransaction(const CWallet *
             if(wallet->IsMine(txout))
             {
                 TransactionRecord sub(hash, nTime);
-                CBitcoinAddress address;
+                CTxDestination address;
                 sub.idx = parts.size(); // sequence number
                 sub.credit = txout.nValue;
                 if (wtx.IsCoinBase())
@@ -132,7 +132,7 @@ QList<TransactionRecord> TransactionRecord::decomposeTransaction(const CWallet *
                     continue;
                 }
 
-                CBitcoinAddress address;
+                CTxDestination address;
                 if (ExtractDestination(txout.scriptPubKey, address))
                 {
                     // Sent to Paycoin Address
