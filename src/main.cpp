@@ -4089,7 +4089,7 @@ void SetMintWarning(const string& strNewWarning)
     if (strMintWarning != strNewWarning)
     {
         strMintWarning = strNewWarning;
-        MainFrameRepaint();
+        NotifyBlocksChanged();
     }
 }
 
