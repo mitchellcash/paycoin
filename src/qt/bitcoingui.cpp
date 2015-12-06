@@ -77,7 +77,8 @@ BitcoinGUI::BitcoinGUI(QWidget *parent):
     resize(850, 550);
     setWindowTitle(tr("Paycoin Wallet"));
 #ifndef Q_OS_MAC
-    setWindowIcon(QIcon(":icons/paycoin_icon"));
+    qApp->setWindowIcon(QIcon(":icons/paycoin"));
+    setWindowIcon(QIcon(":icons/paycoin"));
 #else
     setUnifiedTitleAndToolBarOnMac(true);
     QApplication::setAttribute(Qt::AA_DontShowIconsInMenus);
@@ -368,9 +369,10 @@ void BitcoinGUI::setClientModel(ClientModel *clientModel)
             QString title_testnet = windowTitle() + QString(" ") + tr("[testnet]");
             setWindowTitle(title_testnet);
 #ifndef Q_OS_MAC
-            setWindowIcon(QIcon(":icons/paycoin_icon"));
+            qApp->setWindowIcon(QIcon(":icons/paycoin_testnet"));
+            setWindowIcon(QIcon(":icons/paycoin_testnet"));
 #else
-            MacDockIconHandler::instance()->setIcon(QIcon(":icons/paycoin_icon"));
+            MacDockIconHandler::instance()->setIcon(QIcon(":icons/paycoin_testnet"));
 #endif
             if(trayIcon)
             {
