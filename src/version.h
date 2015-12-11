@@ -15,9 +15,21 @@
 // These need to be macro's, as version.cpp's voodoo requires it
 
 // Paycoin version - intended for display purpose only
+#define PAYCOIN_VERSION_MAJOR       0
+#define PAYCOIN_VERSION_MINOR       3
+#define PAYCOIN_VERSION_REVISION    3
+#define PAYCOIN_VERSION_BUILD       0
+
+static const int PAYCOIN_VERSION =
+                           1000000 * PAYCOIN_VERSION_MAJOR
+                         +   10000 * PAYCOIN_VERSION_MINOR
+                         +     100 * PAYCOIN_VERSION_REVISION
+                         +       1 * PAYCOIN_VERSION_BUILD;
+
+// Peerunity version - intended for display purpose only
 #define PEERUNITY_VERSION_MAJOR       0
-#define PEERUNITY_VERSION_MINOR       3
-#define PEERUNITY_VERSION_REVISION    3
+#define PEERUNITY_VERSION_MINOR       1
+#define PEERUNITY_VERSION_REVISION    2
 #define PEERUNITY_VERSION_BUILD       0
 
 static const int PEERUNITY_VERSION =
