@@ -73,7 +73,7 @@ BitcoinGUI::BitcoinGUI(QWidget *parent):
     rpcConsole(0),
     spinnerFrame(0)
 {
-    resize(850, 550);
+    restoreWindowGeometry();
     setWindowTitle(tr("Paycoin") + " - " + tr("Wallet"));
 #ifndef Q_OS_MAC
     setWindowIcon(QIcon(":icons/paycoin_icon"));
@@ -190,6 +190,7 @@ BitcoinGUI::BitcoinGUI(QWidget *parent):
 
 BitcoinGUI::~BitcoinGUI()
 {
+    saveWindowGeometry();
 #ifdef Q_OS_MAC
     delete appMenuBar;
 #endif
@@ -478,6 +479,22 @@ void BitcoinGUI::trayIconActivated(QSystemTrayIcon::ActivationReason reason)
     }
 }
 #endif
+
+void BitcoinGUI::saveWindowGeometry()
+{
+    QSettings settings;
+    settings.setValue("nWindowPos", pos());
+    settings.setValue("nWindowSize", size());
+}
+
+void BitcoinGUI::restoreWindowGeometry()
+{
+    QSettings settings;
+    QPoint pos = settings.value("nWindowPos").toPoint();
+    QSize size = settings.value("nWindowSize", QSize(850, 550)).toSize();
+    resize(size);
+    move(pos);
+}
 
 void BitcoinGUI::optionsClicked()
 {
